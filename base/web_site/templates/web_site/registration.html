@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Регистрация
+{% endblock title %}
+
+
+{% block content %}
+<form action="" method="post">
+    {% csrf_token %}
+
+    {% for field in form %}
+    <div class="mb-3">
+        <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+        {{ field }}
+    </div>
+    {% endfor %}
+
+    {% include 'components/errors.html' %}
+
+    <div class="text-end">
+        <button type="submit" class="btn btn-primary text-uppercase" style="width: 100px">Submit</button>
+    </div>
+</form>
+{% endblock content %}

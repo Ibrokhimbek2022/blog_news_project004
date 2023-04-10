@@ -1,0 +1,90 @@
+{% load custom_tags %}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>
+        {% block title %}
+        {% endblock title %}
+    </title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css"
+          integrity="sha384-b6lVK+yci+bfDmaY1u0zE8YYJt0TZxLEAFyYSLHId4xoVvsrQu3INevFKo+Xir8e" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'home' %}">Navbar</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            {% if request.user.is_authenticated %}
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        {{ request.user }}
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'create_article' %}">Добавить статью</a></li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'author_articles' request.user.username %}">
+                                Мои статьи
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+            </ul>
+            {% endif %}
+            <form class="d-flex ms-auto" role="search" action="{% url 'search' %}">
+                <input autocomplete="off" class="form-control me-2" type="search" placeholder="Search"
+                       aria-label="Search" name="q">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+            <div class="d-flex gap-2 ms-2">
+                {% if not request.user.is_authenticated %}
+                <a href="{% url 'login' %}" class="btn btn-success">Войти</a>
+                <a href="{% url 'registration' %}" class="btn btn-warning">Регистрация</a>
+                {% else %}
+                <a href="{% url 'logout' %}" class="btn btn-danger">Выйти</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <div class="row">
+        {% is_auth_pages request as is_true %}
+        {% if not is_true %}
+        <div class="col-2">
+            <h3 class="text-center">Категории</h3>
+
+            <div class="list-group">
+                {% get_categories as categories %}
+                {% for category in categories %}
+                <a href="{{ category.get_absolute_url }}" class="list-group-item list-group-item-action">
+                    {{ category }}</a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="{% if not is_true %} col-10 {% else %} col-6 mx-auto {% endif %}">
+            {% block content %}
+            {% endblock content %}
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Добавить статью
+{% endblock title %}
+
+
+{% block content %}
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {% include 'components/errors.html' %}
+    <button class="btn btn-primary">Создать</button>
+</form>
+{% endblock content %}
