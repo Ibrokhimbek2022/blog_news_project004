@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-$ov*g--nqc)gsl0covv&nix_z#p)*_%zu@0!&p6lq@#c%kbj+m
 DEBUG = True
 # http://127.0.0.1:8000/
 ALLOWED_HOSTS = [
-    "http://ibrhmpltv.pythonanywhere.com/",
+    "ibrhmpltv.pythonanywhere.com/",
     "http://127.0.0.1:8000"
 ]
 
